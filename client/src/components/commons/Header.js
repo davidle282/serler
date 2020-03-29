@@ -12,6 +12,7 @@ class Header extends Component {
   }
 
   renderDropDownMenu() {
+    // if (this.props.isSignedIn) {
     return (
       <ul id="menu-drop-down" className="dropdown-content">
         <li>
@@ -24,6 +25,7 @@ class Header extends Component {
         </li>
       </ul>
     );
+    //}
   }
 
   renderContent() {
@@ -38,32 +40,18 @@ class Header extends Component {
         );
       default:
         return [
-          <li key="1">Hi, {this.props.auth.googleId} </li>,
+          <li key="1">Hi, {this.props.auth._id} </li>,
           <li key="2">
-            <a href="/api/logout">Logout</a>
-          </li>
-        ];
-    }
-  }
-  render() {
-    return (
-      <div className="container">
-        <nav style={{ backgroundColor: "#E8EEFD", width: "100%", height: 80 }}>
-          <div className="">
-            <div className="col s4">
-              <a href="/home">
-                <img
-                  src={logo}
-                  alt="Logo"
-                  style={{
-                    height: 70,
-                    width: 70,
-                    marginTop: 5,
-                    float: "left"
-                  }}
-                />
-              </a>
-            </div>
+            <a href="/api/logout" color="#000000">
+              Logout
+            </a>
+          </li>,
+          <li key="3">
+            <a href="/myarticles" color="#000000">
+              My Articles
+            </a>
+          </li>,
+          <li key="4">
             <div className="col s4">
               <div
                 style={{
@@ -95,15 +83,43 @@ class Header extends Component {
                 />
               </a>
             </div>
-            {/* <Link
-              to={this.props.auth ? "/surveys" : "/"}
-              className="left brand-logo"
-            >
-              Emaily
-            </Link> */}
+            {this.renderDropDownMenu()}
+            {/* <a href="/import" color="#000000">
+              Import Bibtext
+            </a> */}
+          </li>
+        ];
+    }
+  }
+  render() {
+    return (
+      <div className="container">
+        <nav
+          style={{
+            backgroundColor: "#E8EEFD",
+            width: "100%",
+            height: 80,
+            color: "#000000"
+          }}
+        >
+          <div className="">
+            <div className="col s4">
+              <a href="/home">
+                <img
+                  src={logo}
+                  alt="Logo"
+                  style={{
+                    height: 70,
+                    width: 70,
+                    marginTop: 5,
+                    float: "left"
+                  }}
+                />
+              </a>
+            </div>
             <ul className="right">{this.renderContent()}</ul>
           </div>
-          {this.renderDropDownMenu()}
+          {/* {this.renderDropDownMenu()} */}
         </nav>
       </div>
     );
@@ -112,4 +128,8 @@ class Header extends Component {
 function mapStateToProps({ auth }) {
   return { auth };
 }
+// const mapStateToProps = state => {
+//   return { auth: state.auth, isSignedIn: state.auth.isSignedIn };
+// };
+
 export default connect(mapStateToProps)(Header);

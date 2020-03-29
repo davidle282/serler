@@ -14,12 +14,14 @@ const ArticleSchema = new Schema(
     article_location: String,
     article_method: String,
     article_status: String,
-    article_rating: Number
+    article_rating: Number,
+    article_posted_by: String
   },
   { timestamps: true }
 );
 
 //The string is the database name??
-const Article = mongoose.model("col_articles", ArticleSchema);
+// const Article = mongoose.model("col_articles", ArticleSchema);
+mongoose.model("col_articles", ArticleSchema);
 // export the new Schema so we could modify it using Node.js
-module.exports = Article;
+//module.exports = Article;

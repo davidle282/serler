@@ -9,10 +9,16 @@
 
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
+import articleReducer from "./articleReducer";
+import userReducer from "./userReducer";
+import { reducer as formReducer } from "redux-form";
 import homeReducer from "./homeReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  articles: articleReducer,
+  users: userReducer,
+  form: formReducer,
   home: homeReducer
 });
 

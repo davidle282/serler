@@ -1,8 +1,7 @@
 import React from "react";
 import BibtexParse from "bibtex-parse-js";
 import axios from "axios";
-import Header from "../commons/Header";
-import Footer from "../commons/Footer";
+import { connect } from "react-redux";
 
 class ImportBibtex extends React.Component {
   constructor(props) {
@@ -49,7 +48,7 @@ class ImportBibtex extends React.Component {
   }
   // handle the onSubmit event
   onSubmit(e) {
-    if (this.state.isActive == false) {
+    if (this.state.isActive === false) {
       var preview = document.getElementById("show-text");
       preview.innerHTML = "<span>Please select a Bibtex file</span>";
     } else {
@@ -63,11 +62,13 @@ class ImportBibtex extends React.Component {
         article_year: this.state.year,
         article_location: "N/A",
         article_status: "on_hold",
-        article_rating: "0"
+        article_rating: "0",
+        article_posted_by: this.props.auth._id
       };
+
       // call the api to add article to database
-      //axios.post("http://localhost:5000/articles/add", obj);
-      axios.post("https://serler-app.herokuapp.com/articles/add", obj);
+      axios.post("http://localhost:5000/articles/add", obj);
+      // axios.post("https://serler-app.herokuapp.com/articles/add", obj);
       this.setState({
         title: "",
         authors: "",
@@ -134,6 +135,12 @@ class ImportBibtex extends React.Component {
             </td>
             <td>{this.state.year}</td>
           </tr>
+          <tr>
+            <td>
+              <span className="thick">Created By:</span>
+            </td>
+            <td>{this.props.auth._id}</td>
+          </tr>
         </table>
         <button className="btn" onClick={this.onSubmit}>
           Submit
@@ -144,4 +151,9 @@ class ImportBibtex extends React.Component {
   }
 }
 
-export default ImportBibtex;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+export default connect(mapStateToProps)(ImportBibtex);
+
+//export default ImportBibtex;

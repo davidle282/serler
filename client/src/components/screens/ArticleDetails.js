@@ -28,9 +28,9 @@ class ArticleDetails extends React.Component {
   componentDidMount() {
     axios
       .get(
-        //"http://localhost:5000/articles/detail/" + this.props.match.params.id
-        "https://serler-app.herokuapp.com/articles/detail/" +
-          this.props.match.params.id
+        "http://localhost:5000/api/detail/" + this.props.match.params.id
+        // "https://serler-app.herokuapp.com/articles/detail/" +
+        //   this.props.match.params.id
       )
       .then(response => {
         // get value of all the fields from database and set for the state

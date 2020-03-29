@@ -7,7 +7,7 @@ import M from "materialize-css";
 import "./Home.css";
 import Header from "../commons/Header";
 import Footer from "../commons/Footer";
-import { getDataByCondition } from "../../actions/index";
+//import { getDataByCondition } from "../../actions/index";
 
 class Home extends Component {
   constructor(props) {
@@ -1068,8 +1068,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default compose(
-  connect(mapStateToProps, {
-    getDataByCondition
-  })
-)(Home);
+// export default compose(
+//   connect(mapStateToProps, {
+//     getDataByCondition
+//   })
+// )(Home);
