@@ -3,14 +3,17 @@ import { connect } from "react-redux";
 import { fetchArticle } from "../../actions";
 
 class ArticleShow extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
-    this.props.fetchArticle(this.props.match.params.id);
+    const { id } = this.props.match.params;
+    this.props.fetchArticle(id);
   }
   render() {
     if (!this.props.article) {
       return <div>Loading...</div>;
     }
-
     const { article_title, article_authors } = this.props.article;
 
     return (

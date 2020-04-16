@@ -1,8 +1,5 @@
-export const FETCH_USER = "FETCH_USER";
-export const FETCH_USERS = "FETCH_USERS";
-export const CREATE_ARTICLE = "CREATE_ARTICLE";
-export const FETCH_MYARTICLES = "FETCH_MYARTICLES";
-export const FETCH_ARTICLE = "FETCH_ARTICLE";
+export const FETCH_USER = "fetch_user";
+export const FETCH_ARTICLE_DETAIL = "FETCH_ARTICLE_DETAIL";
+export const FETCH_MY_ARTICLES = "FETCH_MY_ARTICLES";
 export const DELETE_ARTICLE = "DELETE_ARTICLE";
-export const SIGN_IN = "SIGN_IN";
-export const SIGN_OUT = "SIGN_OUT";
+export const UPDATE_ARTICLE = "UPDATE_ARTICLE";

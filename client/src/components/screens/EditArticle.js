@@ -1,71 +1,63 @@
-import React, { useState } from "react";
-import axios from "axios";
-import BibtexParse from "bibtex-parse-js";
+import React, { useState, useEffect } from "react";
+import { fetchArticleDetail, updateArticle } from "../../actions/index";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-const initialFieldValues = {
-  title: "",
-  authors: "",
-  pub_type: "",
-  pub: "",
-  DOI: "",
-  year: "",
-};
-
-function ImportBibtex(props) {
-  const { auth } = props;
+function EditArticle(props) {
+  // const article = useSelector((state) => state.article);
+  const initialFieldValues = {
+    title: "",
+    authors: "",
+    pub_type: "",
+    pub: "",
+    doi: "",
+    year: "",
+  };
+  const articleId = props.match.params.id;
   const [values, setvalues] = useState(initialFieldValues);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setvalues({ ...values, [name]: value });
   };
 
-  const readBibFile = (e) => {
-    let _input = null;
-    let files = e.target.files;
-    let reader = new FileReader();
+  useEffect(() => {
+    props.fetchArticleDetail(props.match.params.id);
+  }, []);
 
-    reader.readAsText(files[0]);
-
-    reader.onload = (e) => {
-      _input = e.target.result;
-      // part the conent from the bibtex file to json format
-      var sample = BibtexParse.toJSON(_input);
-      var tags = sample[0].entryTags;
-      const valueFromFile = {
-        title: tags.title,
-        authors: tags.author,
-        pub_type: tags.journal,
-        pub: tags.publisher,
-        DOI: tags.volumn,
-        year: tags.year,
-      };
-      setvalues(valueFromFile);
+  useEffect(() => {
+    // const { article } = props;
+    const info = {
+      title: props.article.article_title,
+      authors: props.article.article_authors,
+      pub_type: props.article.article_publication_type,
+      pub: props.article.article_publication,
+      doi: props.article.article_doi,
+      year: props.article.article_year,
     };
-  };
+    setvalues(info);
+  }, [props.article]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const obj = {
       article_title: values.title,
       article_authors: values.authors,
-      article_publication_tyle: values.pub_type,
+      article_publication_type: values.pub_type,
       article_publication: values.pub,
-      article_DOI: values.DOI,
-      article_posted_by: props.auth._id,
+      article_doi: values.doi,
       article_year: values.year,
     };
-    axios.post("/articles/add", obj).then((res) => {
-      if (res.data.addArticle) {
-        setvalues(initialFieldValues);
-        alert("Successful!");
-      }
-    });
+    // console.log(obj);
+    if (obj) {
+      props.updateArticle(articleId, obj);
+      props.history.push(`/myarticles`);
+    }
   };
 
   return (
     <div className="container">
-      <p>Add new article</p>
+      <p>Update article</p>
       <form onSubmit={handleSubmit} className="col s12">
         <div className="row">
           <div className="input-field col s12">
@@ -122,10 +114,10 @@ function ImportBibtex(props) {
           <div className="input-field col s6">
             <input
               placeholder="Enter DOI here"
-              name="DOI"
+              name="doi"
               type="text"
               className="validate"
-              value={values.DOI}
+              value={values.doi}
               onChange={handleInputChange}
             />
             <label for="first_name">DOI</label>
@@ -147,16 +139,19 @@ function ImportBibtex(props) {
           type="submit"
           className="btn btn-success"
         >
-          Submit
+          Update
         </button>
       </form>
-      <input className="btn" type="file" accept=".bib" onChange={readBibFile} />
     </div>
   );
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+const mapStateToProps = (state) => {
+  return {
+    article: state.article.detail,
+  };
+};
 
-export default connect(mapStateToProps)(ImportBibtex);
+export default connect(mapStateToProps, { fetchArticleDetail, updateArticle })(
+  EditArticle
+);

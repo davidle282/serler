@@ -1,70 +1,63 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchMyArticles } from "../../actions";
-import { Link } from "react-router-dom";
-import TableRow from "../commons/TableRow";
+import { fetchMyArticles, deleteArticle } from "../../actions/index";
 
-class MyArticles extends Component {
-  componentDidMount() {
-    this.props.fetchMyArticles();
-  }
-
-  renderRow() {
-    return this.props.articles.map(function(object, i) {
-      return <TableRow obj={object} key={i} />;
-    });
-  }
-
-  // renderCreate() {
-  //   if (this.props.isSignedIn) {
-  //     return (
-  //       <div style={{ textAlign: "right" }}>
-  //         <Link to="/article/add" className="ui button primary">
-  //           Create Stream
-  //         </Link>
-  //       </div>
-  //     );
-  //   }
-  // }
-
-  renderArticles() {
-    return (
-      <div className="container">
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Authors</th>
-              <th colSpan="2">Action</th>
+function MyArticles(props) {
+  const onDelete = (id) => {
+    props.deleteArticle(id);
+    props.fetchMyArticles();
+  };
+  useEffect(() => {
+    props.fetchMyArticles();
+  }, []);
+  return (
+    <div className="container">
+      <p>My articles</p>
+      <table className="striped">
+        <thead className="card-panel teal lighten-2">
+          <td>Title</td>
+          <td>Authors</td>
+          <td>Year</td>
+          <td>Status</td>
+          <td>Edit</td>
+          <td>Delete</td>
+        </thead>
+        <tbody>
+          {props.articles.map((article) => (
+            <tr key={article._id}>
+              <td>
+                <a href={`/detail/${article._id}`}>{article.article_title}</a>
+              </td>
+              <td>{article.article_authors}</td>
+              <td>{article.article_year}</td>
+              <td>{article.article_status}</td>
+              <td>
+                <button className="btn btn-primary">
+                  <a href={`/edit/${article._id}`}>Edit</a>
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => onDelete(article._id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>{this.renderRow()}</tbody>
-        </table>
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        My Articles
-        {this.renderArticles()}
-        <Link
-          style={{ position: "absolute" }}
-          to="/article/add"
-          className="btn-floating btn-large red"
-        >
-          <i className="material-icons">add</i>
-        </Link>
-      </div>
-    );
-  }
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    articles: Object.values(state.articles)
+    articles: state.article.myArticles,
   };
 };
 
-export default connect(mapStateToProps, { fetchMyArticles })(MyArticles);
+export default connect(mapStateToProps, { fetchMyArticles, deleteArticle })(
+  MyArticles
+);
