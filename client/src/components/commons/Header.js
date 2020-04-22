@@ -11,20 +11,20 @@ class Header extends Component {
     M.AutoInit();
   }
 
-  renderDropDownMenu() {
-    return (
-      <ul id="menu-drop-down" className="dropdown-content">
-        <li>
-          <i className="material-icons">cloud_upload</i>
-          <a href="/import">Add Article</a>
-        </li>
-        <li>
-          <i className="material-icons">power_settings_new</i>
-          <a href="/">Sign out</a>
-        </li>
-      </ul>
-    );
-  }
+  // renderDropDownMenu() {
+  //   return (
+  //     <ul id="menu-drop-down" className="dropdown-content">
+  //       <li>
+  //         <i className="material-icons">cloud_upload</i>
+  //         <a href="/import">Add Article</a>
+  //       </li>
+  //       <li>
+  //         <i className="material-icons">power_settings_new</i>
+  //         <a href="/">Sign out</a>
+  //       </li>
+  //     </ul>
+  //   );
+  // }
 
   renderContent() {
     switch (this.props.auth) {
@@ -79,7 +79,7 @@ class Header extends Component {
                 {this.props.title}
               </div>
             </div>
-            <div className="col s4">
+            {/* <div className="col s4">
               <a
                 className="dropdown-trigger"
                 href="#"
@@ -97,7 +97,7 @@ class Header extends Component {
                   }}
                 />
               </a>
-            </div>
+            </div> */}
             {/* <Link
               to={this.props.auth ? "/surveys" : "/"}
               className="left brand-logo"
@@ -106,13 +106,13 @@ class Header extends Component {
             </Link> */}
             <ul className="right">{this.renderContent()}</ul>
           </div>
-          {this.renderDropDownMenu()}
+          {/* {this.renderDropDownMenu()} */}
         </nav>
       </div>
     );
   }
 }
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+const mapStateToProps = (state) => {
+  return { auth: state.auth.user };
+};
 export default connect(mapStateToProps)(Header);

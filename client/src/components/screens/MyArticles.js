@@ -48,6 +48,13 @@ function MyArticles(props) {
           ))}
         </tbody>
       </table>
+
+      <a
+        class="btn-floating btn-large waves-effect waves-light red"
+        href="/add"
+      >
+        <i class="material-icons">add</i>
+      </a>
     </div>
   );
 }

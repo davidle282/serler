@@ -10,7 +10,7 @@ import MyArticles from "./screens/MyArticles";
 import Header from "./commons/Header";
 import Footer from "./commons/Footer";
 import Landing from "./Landing";
-import ImportBibtex from "./screens/ImportBibtex";
+import AddArticle from "./screens/AddArticle";
 import EditArticle from "./screens/EditArticle";
 
 class App extends Component {
@@ -29,7 +29,7 @@ class App extends Component {
             <Route path="/detail/:id" exact component={ArticleDetails} />
             <Route path="/edit/:id" exact component={EditArticle} />
             <Route path="/myarticles" exact component={MyArticles} />
-            <Route path="/import" exact component={ImportBibtex} />
+            <Route path="/add" exact component={AddArticle} />
           </Switch>
           <Footer />
         </div>

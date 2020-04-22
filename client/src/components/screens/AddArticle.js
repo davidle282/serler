@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BibtexParse from "bibtex-parse-js";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const initialFieldValues = {
   title: "",
@@ -12,8 +13,8 @@ const initialFieldValues = {
   year: "",
 };
 
-function ImportBibtex(props) {
-  const { auth } = props;
+function AddArticle(props) {
+  const user = useSelector((state) => state.auth.user);
   const [values, setvalues] = useState(initialFieldValues);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -150,6 +151,7 @@ function ImportBibtex(props) {
           Submit
         </button>
       </form>
+      <p>Or you can create new article by importing a .bibtex file</p>
       <input className="btn" type="file" accept=".bib" onChange={readBibFile} />
     </div>
   );
@@ -159,4 +161,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(ImportBibtex);
+export default connect(mapStateToProps)(AddArticle);
