@@ -3,7 +3,7 @@ const requireLogin = require("../middlewares/requireLogin");
 const { Article } = require("../models/Article");
 
 router.route("/").get((req, res) => {
-  Article.find((err, articles) => {
+  Article.find({ article_status: "Approved" }).exec((err, articles) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, articles: articles });
   });
