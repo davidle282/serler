@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BibtexParse from "bibtex-parse-js";
 import { connect } from "react-redux";
-import { useSelector } from "react-redux";
 
 const initialFieldValues = {
   title: "",
@@ -14,8 +13,15 @@ const initialFieldValues = {
 };
 
 function AddArticle(props) {
-  const user = useSelector((state) => state.auth.user);
+  const { auth } = props;
+
   const [values, setvalues] = useState(initialFieldValues);
+
+  useEffect(() => {
+    if (!props.auth) {
+      props.history.push("/");
+    }
+  }, [props.auth]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setvalues({ ...values, [name]: value });
@@ -54,6 +60,7 @@ function AddArticle(props) {
       article_publication: values.pub,
       article_DOI: values.DOI,
       article_posted_by: props.auth._id,
+      article_status: "New",
       article_year: values.year,
     };
     axios.post("/articles/add", obj).then((res) => {

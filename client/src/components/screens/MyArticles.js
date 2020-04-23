@@ -8,8 +8,11 @@ function MyArticles(props) {
     props.fetchMyArticles();
   };
   useEffect(() => {
+    if (!props.auth) {
+      props.history.push("/");
+    }
     props.fetchMyArticles();
-  }, []);
+  }, [props.auth]);
   return (
     <div className="container">
       <p>My articles</p>
@@ -32,17 +35,20 @@ function MyArticles(props) {
               <td>{article.article_year}</td>
               <td>{article.article_status}</td>
               <td>
-                <button className="btn btn-primary">
-                  <a href={`/edit/${article._id}`}>Edit</a>
-                </button>
+                <a
+                  class="waves-effect waves-light btn"
+                  href={`/edit/${article._id}`}
+                >
+                  <i class="material-icons">edit</i>
+                </a>
               </td>
               <td>
-                <button
-                  className="btn btn-danger"
+                <a
+                  class="waves-effect waves-light btn"
                   onClick={() => onDelete(article._id)}
                 >
-                  Delete
-                </button>
+                  <i class="material-icons">delete</i>
+                </a>
               </td>
             </tr>
           ))}
@@ -62,6 +68,7 @@ function MyArticles(props) {
 const mapStateToProps = (state) => {
   return {
     articles: state.article.myArticles,
+    auth: state.auth,
   };
 };
 
