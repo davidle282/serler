@@ -38,20 +38,54 @@ function EditArticle(props) {
     setvalues(info);
   }, [props.article]);
 
+  const rule = {
+    title: {
+      required: true,
+      err: "Title is required",
+    },
+    authors: {
+      required: true,
+      err: "Authors is required",
+    },
+    year: {
+      required: true,
+      err: "Year is required",
+    },
+  };
+  const validate = (rule, values) => {
+    for (const prop in rule) {
+      if (rule[prop].required) {
+        if (!values[prop]) {
+          alert(rule[prop].err);
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const obj = {
-      article_title: values.title,
-      article_authors: values.authors,
-      article_publication_type: values.pub_type,
-      article_publication: values.pub,
-      article_doi: values.doi,
-      article_year: values.year,
-    };
-    // console.log(obj);
-    if (obj) {
-      props.updateArticle(articleId, obj);
-      props.history.push(`/myarticles`);
+    if (
+      validate(rule, {
+        title: values.title,
+        authors: values.authors,
+        year: values.year,
+      })
+    ) {
+      const obj = {
+        article_title: values.title,
+        article_authors: values.authors,
+        article_publication_type: values.pub_type,
+        article_publication: values.pub,
+        article_doi: values.doi,
+        article_year: values.year,
+      };
+      // console.log(obj);
+      if (obj) {
+        props.updateArticle(articleId, obj);
+        props.history.push(`/myarticles`);
+      }
     }
   };
 

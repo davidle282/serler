@@ -51,24 +51,58 @@ function AddArticle(props) {
     };
   };
 
+  const rule = {
+    title: {
+      required: true,
+      err: "Title is required",
+    },
+    authors: {
+      required: true,
+      err: "Authors is required",
+    },
+    year: {
+      required: true,
+      err: "Year is required",
+    },
+  };
+  const validate = (rule, values) => {
+    for (const prop in rule) {
+      if (rule[prop].required) {
+        if (!values[prop]) {
+          alert(rule[prop].err);
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const obj = {
-      article_title: values.title,
-      article_authors: values.authors,
-      article_publication_tyle: values.pub_type,
-      article_publication: values.pub,
-      article_DOI: values.DOI,
-      article_posted_by: props.auth._id,
-      article_status: "New",
-      article_year: values.year,
-    };
-    axios.post("/articles/add", obj).then((res) => {
-      if (res.data.addArticle) {
-        setvalues(initialFieldValues);
-        alert("Successful!");
-      }
-    });
+    if (
+      validate(rule, {
+        title: values.title,
+        authors: values.authors,
+        year: values.year,
+      })
+    ) {
+      const obj = {
+        article_title: values.title,
+        article_authors: values.authors,
+        article_publication_tyle: values.pub_type,
+        article_publication: values.pub,
+        article_DOI: values.DOI,
+        article_posted_by: props.auth._id,
+        article_status: "New",
+        article_year: values.year,
+      };
+      axios.post("/articles/add", obj).then((res) => {
+        if (res.data.addArticle) {
+          setvalues(initialFieldValues);
+          alert("Successful!");
+        }
+      });
+    }
   };
 
   return (
